@@ -9,5 +9,5 @@ db = mysql.connector.conect(
 cursor = db.cursor()
 sql  = 'select * from users'
 cursor.execute(sql)
-
+cursor.close()
 db.close()
