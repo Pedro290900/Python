@@ -1,13 +1,34 @@
 import mysql.connector
+from mysql.connector import Error
 
-db = mysql.connector.conect(
-  host="localhost",
-  user="root",
-  password="password"
-)
+try:
+    # Conectar ao banco
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="password",
+        database="meu_banco"  
+    )
 
-cursor = db.cursor()
-sql  = 'select * from users'
-cursor.execute(sql)
-cursor.close()
-db.close()
+    if db.is_connected():
+        print("✅ Conexão realizada com sucesso!")
+
+        cursor = db.cursor()
+        sql = "SELECT * FROM users"
+        cursor.execute(sql)
+
+        # Buscar todos os registros
+        resultados = cursor.fetchall()
+
+        print("📋 Usuários cadastrados:")
+        for linha in resultados:
+            print(linha)
+
+except Error as e:
+    print(f"❌ Erro ao conectar: {e}")
+
+finally:
+    if db.is_connected():
+        cursor.close()
+        db.close()
+        print("🔒 Conexão encerrada.")
